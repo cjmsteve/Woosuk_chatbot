@@ -16,14 +16,17 @@ try {
 function getBotResponse(message) {
     const msg = message.toLowerCase().trim();
 
-    //JSON 데이터 순회 및 키워드 찾기
+    // JSON 데이터 순회 및 키워드 찾기 (안전성: aliases 및 keyword 방어)
     for (const item of chatbotData.keywords) {
-        //  keyword, aliases 확인
-        const matchFound = 
-            msg.includes(item.keyword.toLowerCase()) || 
-            item.aliases.some(alias => msg.includes(alias.toLowerCase()));
+        const keyword = item.keyword ? String(item.keyword).toLowerCase() : '';
+        const aliases = Array.isArray(item.aliases) ? item.aliases : [];
 
-        if (matchFound) {
+        const foundInKeyword = keyword !== '' && msg.includes(keyword);
+        const foundInAliases = aliases.some(alias => {
+            return typeof alias === 'string' && alias !== '' && msg.includes(alias.toLowerCase());
+        });
+
+        if (foundInKeyword || foundInAliases) {
             return item.response; // 일치하는 응답 반환
         }
     }

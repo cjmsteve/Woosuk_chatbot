@@ -87,10 +87,7 @@ userInput.addEventListener('keypress', (event) => {
     }
 });
 
-// [삭제됨] 하단 추천 버튼 클릭 이벤트 리스너
-// suggestionButtons.forEach(button => { ... });
-
-// [남아있음] 메시지 버블 내 버튼 클릭 이벤트 리스너
+// 메시지 버블 내 버튼 클릭 이벤트 리스너
 messageButtons.forEach(button => {
     button.addEventListener('click', () => {
         // 버튼의 텍스트를 인자로 넘겨 sendMessage 호출

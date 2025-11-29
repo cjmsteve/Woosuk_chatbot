@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 챗봇 API 엔드포인트 설정: /api/chat
 app.post('/api/chat', (req, res) => {
     // 프런트엔드에서 보낸 메시지를 추출
-    const { message, history } = req.body; // history는 사용하지 않지만, 요청 구조는 유지
+    const { message } = req.body;
 
     if (!message) {
         return res.status(400).json({ error: '메시지가 누락되었습니다.' });
