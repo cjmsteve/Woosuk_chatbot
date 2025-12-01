@@ -53,11 +53,7 @@ async function sendMessage(buttonMessage=null) {
             headers: {
                 'Content-Type': 'application/json',
             },
-
-            body: JSON.stringify({ 
-                message: message, 
-                history: historyToSend
-            }),
+            body: JSON.stringify({ message: message }),
         });
 
         // 응답 처리
@@ -95,13 +91,30 @@ userInput.addEventListener('keypress', (event) => {
     }
 });
 
+
+
 //메시지 버블 내 버튼 클릭 이벤트 리스너
 messageButtons.forEach(button => {
     button.addEventListener('click', () => {
-        //버튼의 텍스트를 인자로 넘겨 sendMessage 호출
-        sendMessage(button.textContent.trim());
+        // 버튼의 텍스트를 인자로 넘겨 sendMessage 호출
+        sendMessage(button.textContent);
     });
 });
 
-//페이지 로드 시 입력창에 포커스
+// 페이지 로드 시 입력창에 포커스
 userInput.focus();
+
+
+// 현재 접속 시간을 표시하는 기능
+function displayCurrentTime() {
+    const timeElement = document.getElementById('current-time');
+    const now = new Date(); 
+    const timeString = now.toLocaleTimeString('ko-KR', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true 
+    }); 
+    if (timeElement) {
+        timeElement.textContent = timeString;
+    }
+}
