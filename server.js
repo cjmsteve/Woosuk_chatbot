@@ -14,6 +14,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.post('/api/chat', (req, res) => {
     // 프런트엔드에서 보낸 메시지를 추출
     const { message } = req.body;
+    //버튼 눌렀을때 반환 값 
+    if(get_academicCalendar) {
+        return res.static(200).json({
+            message:'우석대학교 학사 일정입니다. 자세한 내용은 아래 링크를 통해 확인해 주세요',
+            link:'https://www.woosuk.ac.kr/main/?menu=84'
+        });
+    }
 
     if (!message) {
         return res.status(400).json({ error: '메시지가 누락되었습니다.' });
