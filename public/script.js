@@ -27,18 +27,20 @@ function displayMessage(content, sender) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 //버튼 id 전송하는 함수 
-document.querySelectorAll(".message-button").forEach(btn => {
-    btn.addEventListener("click", () => {
+document.querySelectorAll('.message-button').forEach(btn => {
+    btn.addEventListener('click', () =>{
         const buttonId = btn.id;
 
-        fetch("/api/chat",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
+        fetch('/apt/chat',{
+            method: 'POST',
+            headers: {'Content-Type':'application/json',},
             body:JSON.stringify({id:buttonId})
         })
         .then(res => res.json())
-    })
-})
+        .then(data => console.log("서버응답", data))
+        .catch(err => console.error(err));
+    });
+});
 
 //메시지를 전송하는 비동기 함수 (버튼/입력 모두 처리)
 async function sendMessage(buttonMessage=null) {
