@@ -36,7 +36,7 @@ async function sendMessage(buttonMessage=null) {
     displayMessage(message, 'user');
 
     const historyToSend = [...conversationHistory]; //사용 X
-
+    
     conversationHistory.push({ role: "user", parts: [{ text: message }] });//사용 X
 
     userInput.value = '';
