@@ -25,7 +25,12 @@ async function getBotResponse(message) {
             .select('keyword, aliases, response');
 
         if (error) throw error;
-        if (!rules || rules.length === 0) {
+        // `rules`가 아예 없을 때와, 비어 있는 배열일 때를 구분
+        if (!rules) {
+            return "데이터베이스에서 규칙을 가져오지 못했습니다.";
+        }
+
+        if (rules.length === 0) {
             return "현재 챗봇 응답 데이터베이스에 규칙이 없습니다.";
         }
 
