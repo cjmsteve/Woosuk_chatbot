@@ -40,17 +40,22 @@ async function getBotResponse(message) {
             
             let aliases = [];
             if (item.aliases && typeof item.aliases === 'string') {
-                 // DB에 문자열로 넘어온 JSONB 값을 파싱
-                 aliases = JSON.parse(item.aliases); 
+                 try {
+                     aliases = JSON.parse(item.aliases); 
+                 } catch (e) {
+                     console.error(`JSON 파싱 오류 발생 (Keyword: ${item.keyword}):`, e);
+                     continue; // 이 항목 건너뛰기
+                 }
             } else if (Array.isArray(item.aliases)) {
-                // 이미 배열로 넘어온 경우 (최신 supabase-js 버전일 경우)
                 aliases = item.aliases;
             }
         }
         // 키워드 또는 별칭 중 하나라도 메시지에 포함되어 있는지 확인
         const matchFound = 
             msg.includes(keyword) || 
-            aliases.some(alias => msg.includes(alias.toLowerCase()));
+                (Array.isArray(aliases) && aliases.some(alias => 
+                    typeof alias === 'string' && msg.includes(alias.toLowerCase())
+                ));
 
         if (matchFound) {
             return item.response; // 일치하는 응답 반환
