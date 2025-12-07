@@ -37,16 +37,23 @@ async function getBotResponse(message) {
         // 키워드 매칭 로직 (클라이언트 측에서 수행)
         for (const item of rules) {
             const keyword = item.keyword ? item.keyword.toLowerCase() : '';
-            const aliases = item.aliases || []; 
-
-            // 키워드 또는 별칭 중 하나라도 메시지에 포함되어 있는지 확인
-            const matchFound = 
-                msg.includes(keyword) || 
-                aliases.some(alias => msg.includes(alias.toLowerCase()));
-
-            if (matchFound) {
-                return item.response; // 일치하는 응답 반환
+            
+            let aliases = [];
+            if (item.aliases && typeof item.aliases === 'string') {
+                 // DB에 문자열로 넘어온 JSONB 값을 파싱
+                 aliases = JSON.parse(item.aliases); 
+            } else if (Array.isArray(item.aliases)) {
+                // 이미 배열로 넘어온 경우 (최신 supabase-js 버전일 경우)
+                aliases = item.aliases;
             }
+        }
+        // 키워드 또는 별칭 중 하나라도 메시지에 포함되어 있는지 확인
+        const matchFound = 
+            msg.includes(keyword) || 
+            aliases.some(alias => msg.includes(alias.toLowerCase()));
+
+        if (matchFound) {
+            return item.response; // 일치하는 응답 반환
         }
         
         // 기본 응답
