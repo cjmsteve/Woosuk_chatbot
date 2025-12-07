@@ -1,4 +1,4 @@
-// const { createClient } = require('@supabase/supabase-js');
+const { createClient } = require('@supabase/supabase-js');
 
 // Supabase 불러오기
 const SUPABASE_URL = process.env.SUPABASE_URL;
