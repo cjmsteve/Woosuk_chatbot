@@ -9,19 +9,30 @@ const API_URL = '/api/chat';
 
 let conversationHistory = []; //사용 안함 ai 연결용 구조 유지
 
+// HTML 특수 문자를 이스케이프하여 XSS 공격 방지
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 //메시지를 채팅 박스에 표시하는 함수
 function displayMessage(content, sender) {
     const msgDiv = document.createElement('div');
     msgDiv.classList.add('message', `${sender}-message`);
 
+    // 먼저 HTML 이스케이프 처리
+    const escapedContent = escapeHtml(content);
+    
     //링크를 하이퍼링크로 변환
     const linkRegex = /\[(.*?)\]\((.*?)\)/g;
-    const htmlContent = content.replace(linkRegex, (match, text, url) => {
-        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+    const htmlContent = escapedContent.replace(linkRegex, (match, text, url) => {
+        // URL 검증 (http, https만 허용)
+        const safeUrl = url.match(/^https?:\/\//) ? url : '#';
+        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${text}</a>`;
     });
 
     msgDiv.innerHTML = htmlContent.replace(/\n/g, '<br>');
-    //msgDiv.textContent = content;
     chatBox.appendChild(msgDiv);
     //스크롤을 항상 맨 아래로 이동
     chatBox.scrollTop = chatBox.scrollHeight;
@@ -30,7 +41,14 @@ function displayMessage(content, sender) {
 //메시지를 전송하는 비동기 함수 (버튼/입력 모두 처리)
 async function sendMessage(buttonMessage=null) {
     const message = buttonMessage ? buttonMessage : userInput.value.trim(); 
+    
+    // 메시지 유효성 검사
     if (message === '') return; // 빈 메시지는 전송하지 않음
+    
+    if (message.length > 500) {
+        displayMessage('메시지는 500자를 초과할 수 없습니다.', 'bot');
+        return;
+    }
 
     //사용자 메시지 표시 및 입력창 초기화
     displayMessage(message, 'user');
