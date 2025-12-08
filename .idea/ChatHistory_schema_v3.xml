@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChatHistoryState">
+    <option name="chatSessions" value="{&quot;ebe2144e-5268-4241-843d-81e4b6e8d9fb&quot;:{&quot;id&quot;:&quot;ebe2144e-5268-4241-843d-81e4b6e8d9fb&quot;,&quot;name&quot;:&quot;다크모드 토글 버튼 추가 요청&quot;,&quot;timestamp&quot;:1765120854770,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;\u003cuser_query\u003e\n여기서 토글 형식으로 다크모드로 변환할수 있는 버틀 추가해줘\n\u003c/user_query\u003e&quot;}]},{&quot;role&quot;:&quot;assistant&quot;,&quot;content&quot;:[]}]}}" />
+  </component>
+</project>

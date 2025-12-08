@@ -118,3 +118,6 @@ function displayCurrentTime() {
         timeElement.textContent = timeString;
     }
 }
+
+displayCurrentTime();
+setInterval(displayCurrentTime, 60000); // 1분마다 업데이트
