@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 5000; // 환경 변수가 없으면 5000번 포트 사용
 
 // 미들웨어 설정
-app.use(express.json({ limit: '1mb' })); // JSON 페이로드 크기 제한
-app.use(express.urlencoded({ extended: true, limit: '1mb' })); // URL 인코딩 지원
+app.use(express.json({ limit: '10kb' })); // JSON 페이로드 크기 제한 (챗봇 메시지용)
+app.use(express.urlencoded({ extended: true, limit: '10kb' })); // URL 인코딩 지원
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 헬스 체크 엔드포인트

@@ -16,6 +16,33 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+// URL 유효성 검사 함수
+function isValidUrl(urlString) {
+    try {
+        const url = new URL(urlString);
+        // 허용된 도메인 목록 (우석대학교 관련 사이트 및 신뢰할 수 있는 사이트)
+        const allowedDomains = [
+            'woosuk.ac.kr',
+            'jc.woosuk.ac.kr',
+            'portal.woosuk.ac.kr',
+            'www.woosuk.ac.kr'
+        ];
+        
+        // http 또는 https만 허용
+        if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+            return false;
+        }
+        
+        // 허용된 도메인 중 하나와 일치하는지 확인
+        const hostname = url.hostname.toLowerCase();
+        return allowedDomains.some(domain => 
+            hostname === domain || hostname.endsWith('.' + domain)
+        );
+    } catch (e) {
+        return false;
+    }
+}
+
 //메시지를 채팅 박스에 표시하는 함수
 function displayMessage(content, sender) {
     const msgDiv = document.createElement('div');
@@ -27,8 +54,11 @@ function displayMessage(content, sender) {
     //링크를 하이퍼링크로 변환
     const linkRegex = /\[(.*?)\]\((.*?)\)/g;
     const htmlContent = escapedContent.replace(linkRegex, (match, text, url) => {
-        // URL 검증 (http, https만 허용)
-        const safeUrl = url.match(/^https?:\/\//) ? url : '#';
+        // URL 유효성 검증
+        const safeUrl = isValidUrl(url) ? url : '#';
+        if (safeUrl === '#') {
+            console.warn('Invalid or untrusted URL blocked:', url);
+        }
         return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${text}</a>`;
     });
 
